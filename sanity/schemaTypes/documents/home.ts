@@ -17,5 +17,22 @@ export const home = defineType({
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: "herobannerImage",
+      title: "Herobanner Image",
+      type: "image",
+      validation: (Rule) => Rule.required().assetRequired(),
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        defineField({
+          name: "alt",
+          type: "string",
+          title: "Alt Text",
+          validation: (Rule) => Rule.required(),
+        }),
+      ],
+    }),
   ],
 });

@@ -32,7 +32,6 @@ const blog = defineType({
       type: "slug",
       options: {
         source: "title",
-        maxLength: 96,
       },
       validation: (Rule) => Rule.required(),
     }),
@@ -77,11 +76,11 @@ const blog = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "category",
-      title: "Category",
-      type: "reference",
+      name: "categories",
+      title: "Categories",
+      type: "array",
       group: "blog",
-      to: [{ type: "blogCategory" }],
+      of: [{ type: "reference", to: { type: "blogCategory" } }],
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -90,32 +89,28 @@ const blog = defineType({
       type: "datetime",
       group: "blog",
     }),
-    defineField({
-      name: "postedToX",
-      title: "Posted To X",
-      type: "boolean",
-      group: "blog",
-    }),
-    defineField({
-      name: "xPostStatus",
-      title: "Posted To X",
-      type: "string",
-      group: "blog",
-    }),
     orderRankField({ type: "blog" }),
   ],
   preview: {
     select: {
       title: "title",
       media: "heroImage",
-      category: "category.label",
+      category0: "categories.0.label",
+      category1: "categories.1.label",
+      category2: "categories.2.label",
+      category3: "categories.3.label",
     },
     prepare(selection) {
-      const { title, media, category } = selection;
-
+      console.log(selection);
+      const { title, media, category0, category1, category2, category3 } =
+        selection;
+      // console.log(categories);
+      const categories = [category0, category1, category2].filter(Boolean);
+      const subTitle = categories.join(" | ");
+      const hasMoreCategories = Boolean(category3);
       return {
         title: title,
-        subtitle: category || "No Categories",
+        subtitle: hasMoreCategories ? subTitle + " | ..." : subTitle,
         media: media,
       };
     },

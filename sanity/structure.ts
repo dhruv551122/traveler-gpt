@@ -70,7 +70,7 @@ const blogsByCategory = (
                 context,
                 type: "blog",
                 title: "Blog",
-                filter: "_type == 'blog' && category._ref == $categoryId",
+                filter: "_type == 'blog' && $categoryId in categories[]._ref",
                 params: { categoryId },
               }),
             ]),
