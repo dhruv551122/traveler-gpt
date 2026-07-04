@@ -3,9 +3,9 @@ import {
   multiTypes as multiTypesArray,
   singletons,
 } from "./documents";
-import blog from "./documents/blog";
-import blogAuthor from "./documents/blogAuthor";
-import blogCategory from "./documents/blogCategory";
+import blog from "./documents/blogs/blog";
+import blogAuthor from "./documents/blogs/blogAuthor";
+import blogCategory from "./documents/blogs/blogCategory";
 import { objects } from "./objects";
 
 export const schemaTypes = [

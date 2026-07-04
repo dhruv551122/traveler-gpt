@@ -20,7 +20,7 @@ import {
   StructureResolverContext,
 } from "sanity/structure";
 import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list";
-import { getTitleCase } from "@/utils";
+import { getTitleCase } from "@/lib/utils";
 
 type Base<T = SchemaType> = {
   id?: string;

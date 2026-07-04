@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { cn, slugify } from "@/utils";
+import { cn, slugify } from "@/lib/utils";
 import { PortableText } from "next-sanity";
 import Link from "next/link";
 import React from "react";
 import { SanityImage } from "./sanityImage";
+import { RichTable } from "./richTable";
 
 interface Props {
   content: Array<any> | undefined;
@@ -132,36 +133,7 @@ const RichText: React.FC<Props> = ({
         );
       },
 
-      styledTable: ({ value }: any) => {
-        return (
-          <div className="overflow-x-scroll custom-scrollbar">
-            <table className="w-full mb-4 overflow-hidden border 0 border-gray-30 rounded-xl">
-              <tbody className="">
-                {value.rows?.map((row: any, i: number) => {
-                  return (
-                    <tr key={i}>
-                      {row.cells?.map((cellValue: any, j: number) => {
-                        return (
-                          <td
-                            key={j}
-                            style={{
-                              backgroundColor: cellValue?.bgColor?.value,
-                              color: cellValue?.textColor?.value,
-                            }}
-                            className="p-2 "
-                          >
-                            <PortableText value={cellValue.content} />
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        );
-      },
+      styledTable: RichTable,
     },
   };
 
@@ -173,3 +145,34 @@ const RichText: React.FC<Props> = ({
 };
 
 export default RichText;
+
+// ({ value }: any) => {
+//   return (
+//     <div className="overflow-x-scroll custom-scrollbar">
+//       <table className="w-full mb-4 overflow-hidden border 0 border-gray-30 rounded-xl">
+//         <tbody className="">
+//           {value.rows?.map((row: any, i: number) => {
+//             return (
+//               <tr key={i}>
+//                 {row.cells?.map((cellValue: any, j: number) => {
+//                   return (
+//                     <td
+//                       key={j}
+//                       style={{
+//                         backgroundColor: cellValue?.bgColor?.value,
+//                         color: cellValue?.textColor?.value,
+//                       }}
+//                       className="p-2 "
+//                     >
+//                       <PortableText value={cellValue.content} />
+//                     </td>
+//                   );
+//                 })}
+//               </tr>
+//             );
+//           })}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// },

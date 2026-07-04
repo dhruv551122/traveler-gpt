@@ -51,7 +51,6 @@ export type Blog = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    alt: string;
     _type: "image";
   };
   content: BlockContent;
@@ -108,7 +107,7 @@ export type BlockContent = Array<
     }
   | ({
       _key: string;
-    } & StyledTable)
+    } & RichTableBlock)
 >;
 
 export type SanityImageCrop = {
@@ -137,6 +136,13 @@ export type Seo = {
   _type: "seo";
   seoTitle: string;
   seoDescription: string;
+  seoImage?: {
+    asset: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
 };
 
 export type BlogAuthor = {
@@ -172,14 +178,7 @@ export type StyledTable = {
           _key: string;
         }>;
         style?:
-          | "normal"
-          | "h1"
-          | "h2"
-          | "h3"
-          | "h4"
-          | "h5"
-          | "h6"
-          | "blockquote";
+          "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
         listItem?: "bullet" | "number";
         markDefs?: Array<{
           href?: string;
@@ -223,9 +222,13 @@ export type HomePage = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    alt: string;
     _type: "image";
   };
+  herobannerOptions: Array<
+    {
+      _key: string;
+    } & BlogCategoryReference
+  >;
 };
 
 export type HighlightColor = {
@@ -238,6 +241,64 @@ export type SimplerColor = {
   _type: "simplerColor";
   label?: string;
   value?: string;
+};
+
+export type Content = Array<{
+  children?: Array<{
+    marks?: Array<string>;
+    text?: string;
+    _type: "span";
+    _key: string;
+  }>;
+  style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+  listItem?: "bullet" | "number";
+  markDefs?: Array<{
+    href?: string;
+    _type: "link";
+    _key: string;
+  }>;
+  level?: number;
+  _type: "block";
+  _key: string;
+}>;
+
+export type RichTableBlock = RichTable;
+
+export type ColumnHeader = {
+  _type: "columnHeader";
+  title?: string;
+  cellIndex: number;
+};
+
+export type RichTableCell = {
+  _type: "richTableCell";
+  content?: Content;
+};
+
+export type Row = {
+  _type: "row";
+  title?: string;
+  cells?: Array<
+    {
+      _key: string;
+    } & RichTableCell
+  >;
+};
+
+export type RichTable = {
+  _type: "richTable";
+  rows: Array<
+    {
+      _key: string;
+    } & Row
+  >;
+  columnHeaders?: Array<
+    {
+      _key: string;
+    } & ColumnHeader
+  >;
+  hasColumnTitles?: boolean;
+  hasRowTitles?: boolean;
 };
 
 export type MediaTag = {
@@ -364,6 +425,12 @@ export type AllSanitySchemaTypes =
   | HomePage
   | HighlightColor
   | SimplerColor
+  | Content
+  | RichTableBlock
+  | ColumnHeader
+  | RichTableCell
+  | Row
+  | RichTable
   | MediaTag
   | SanityImagePaletteSwatch
   | SanityImagePalette
@@ -376,7 +443,7 @@ export type AllSanitySchemaTypes =
 
 // Source: sanity/lib/query.ts
 // Variable: homePageQuery
-// Query: *[ _type == 'homePage' && _id == 'homePage'][0]{    ...,    "blogs": *[ _type == 'blog']{        ...,        author->,        categories[]->,    }}
+// Query: *[ _type == 'homePage' && _id == 'homePage'][0]{    ...,    herobannerImage{            ...,            asset->        },    herobannerOptions[]->,    "blogs": *[ _type == 'blog']{        ...,        heroImage{            ...,            asset->        },        author->,        categories[]->,    },    "categories": *[ _type == 'blogCategory' ]{        ...,    }}
 export type HomePageQueryResult = {
   _id: "homePage";
   _type: "homePage";
@@ -385,13 +452,43 @@ export type HomePageQueryResult = {
   _rev: string;
   herobannerTitle: string;
   herobannerImage: {
-    asset: SanityImageAssetReference;
+    asset: {
+      _id: string;
+      _type: "sanity.imageAsset";
+      _createdAt: string;
+      _updatedAt: string;
+      _rev: string;
+      originalFilename?: string;
+      label?: string;
+      title?: string;
+      description?: string;
+      altText?: string;
+      sha1hash: string;
+      extension: string;
+      mimeType: string;
+      size: number;
+      assetId: string;
+      uploadId?: string;
+      path: string;
+      url: string;
+      metadata?: SanityImageMetadata;
+      source?: SanityAssetSourceData;
+    };
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    alt: string;
     _type: "image";
   };
+  herobannerOptions: Array<{
+    _id: string;
+    _type: "blogCategory";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    label: string;
+    slug: Slug;
+    orderRank?: string;
+  }>;
   blogs: Array<{
     _id: string;
     _type: "blog";
@@ -403,11 +500,31 @@ export type HomePageQueryResult = {
     slug: Slug;
     description: string;
     heroImage: {
-      asset: SanityImageAssetReference;
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        originalFilename?: string;
+        label?: string;
+        title?: string;
+        description?: string;
+        altText?: string;
+        sha1hash: string;
+        extension: string;
+        mimeType: string;
+        size: number;
+        assetId: string;
+        uploadId?: string;
+        path: string;
+        url: string;
+        metadata?: SanityImageMetadata;
+        source?: SanityAssetSourceData;
+      };
       media?: unknown;
       hotspot?: SanityImageHotspot;
       crop?: SanityImageCrop;
-      alt: string;
       _type: "image";
     };
     content: BlockContent;
@@ -433,12 +550,137 @@ export type HomePageQueryResult = {
     uplodedAt?: string;
     orderRank?: string;
   }>;
+  categories: Array<{
+    _id: string;
+    _type: "blogCategory";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    label: string;
+    slug: Slug;
+    orderRank?: string;
+  }>;
+} | null;
+
+// Source: sanity/lib/query.ts
+// Variable: blogsByTitleSearch
+// Query: *[_type == 'blog' && title match $searchPrefix] | order(score desc){        _id,        title,        description,        categories->,        "slug": slug.current,        heroImage{            ...,            asset->        },    }
+export type BlogsByTitleSearchResult = Array<{
+  _id: string;
+  title: string;
+  description: string;
+  categories: Array<{
+    _id: string;
+    _type: "blogCategory";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    label: string;
+    slug: Slug;
+    orderRank?: string;
+  }>;
+  slug: string;
+  heroImage: {
+    asset: {
+      _id: string;
+      _type: "sanity.imageAsset";
+      _createdAt: string;
+      _updatedAt: string;
+      _rev: string;
+      originalFilename?: string;
+      label?: string;
+      title?: string;
+      description?: string;
+      altText?: string;
+      sha1hash: string;
+      extension: string;
+      mimeType: string;
+      size: number;
+      assetId: string;
+      uploadId?: string;
+      path: string;
+      url: string;
+      metadata?: SanityImageMetadata;
+      source?: SanityAssetSourceData;
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+}>;
+
+// Source: sanity/lib/query.ts
+// Variable: blogBySlugQuery
+// Query: *[ _type == "blog" && slug.current == $blogSlug][0]{        ...,        heroImage{            ...,            asset->        },        author->,        categories[]->,    }
+export type BlogBySlugQueryResult = {
+  _id: string;
+  _type: "blog";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  seo: Seo;
+  title: string;
+  slug: Slug;
+  description: string;
+  heroImage: {
+    asset: {
+      _id: string;
+      _type: "sanity.imageAsset";
+      _createdAt: string;
+      _updatedAt: string;
+      _rev: string;
+      originalFilename?: string;
+      label?: string;
+      title?: string;
+      description?: string;
+      altText?: string;
+      sha1hash: string;
+      extension: string;
+      mimeType: string;
+      size: number;
+      assetId: string;
+      uploadId?: string;
+      path: string;
+      url: string;
+      metadata?: SanityImageMetadata;
+      source?: SanityAssetSourceData;
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  content: BlockContent;
+  author: {
+    _id: string;
+    _type: "blogAuthor";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    authorName: string;
+    orderRank?: string;
+  };
+  categories: Array<{
+    _id: string;
+    _type: "blogCategory";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    label: string;
+    slug: Slug;
+    orderRank?: string;
+  }>;
+  uplodedAt?: string;
+  orderRank?: string;
 } | null;
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "*[ _type == 'homePage' && _id == 'homePage'][0]{\n    ...,\n    \"blogs\": *[ _type == 'blog']{\n        ...,\n        author->,\n        categories[]->,\n    }\n}\n": HomePageQueryResult;
+    "*[ _type == 'homePage' && _id == 'homePage'][0]{\n    ...,\n    herobannerImage{\n            ...,\n            asset->\n        },\n    herobannerOptions[]->,\n    \"blogs\": *[ _type == 'blog']{\n        ...,\n        heroImage{\n            ...,\n            asset->\n        },\n        author->,\n        categories[]->,\n    },\n    \"categories\": *[ _type == 'blogCategory' ]{\n        ...,\n    }\n}\n": HomePageQueryResult;
+    "\n    *[_type == 'blog' && title match $searchPrefix] | order(score desc){\n        _id,\n        title,\n        description,\n        categories->,\n        \"slug\": slug.current,\n        heroImage{\n            ...,\n            asset->\n        },\n    }\n": BlogsByTitleSearchResult;
+    '\n    *[ _type == "blog" && slug.current == $blogSlug][0]{\n        ...,\n        heroImage{\n            ...,\n            asset->\n        },\n        author->,\n        categories[]->,\n    }\n': BlogBySlugQueryResult;
   }
 }

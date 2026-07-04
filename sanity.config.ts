@@ -14,6 +14,7 @@ import { structure } from "./sanity/structure";
 import { media } from "sanity-plugin-media";
 import { simplerColorInput } from "sanity-plugin-simpler-color-input";
 import { structureTool } from "sanity/structure";
+import { richTablePlugin } from "sanity-plugin-rich-table";
 
 const singletonTypes = new Set<string>([...singletonType]);
 
@@ -25,7 +26,7 @@ const singletonActions = new Set<string>([
 
 export default defineConfig({
   name: "traveler-gpt",
-  title: "VersCredit",
+  title: "Traveler GPT",
   basePath: "/studio",
   projectId,
   dataset,
@@ -44,6 +45,7 @@ export default defineConfig({
     structureTool({ structure }),
     visionTool({ defaultApiVersion: apiVersion }),
     media(),
+    richTablePlugin({}),
     simplerColorInput({
       defaultColorFormat: "rgba",
       defaultColorList: [

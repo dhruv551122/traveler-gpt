@@ -1,5 +1,5 @@
 import { Span } from "next/dist/trace";
-import { SanityImage } from "../sanityImage";
+import { SanityImage } from "./sanityImage";
 import {
   Carousel,
   CarouselContent,
@@ -25,7 +25,7 @@ const BlogCarousel = async ({
             <div className="flex flex-col gap-4">
               <SanityImage
                 src={blog.heroImage}
-                alt={blog.heroImage.alt}
+                alt={blog.heroImage.asset?.altText}
                 width={100}
                 height={100}
                 className="w-full h-[250px] object-cover"

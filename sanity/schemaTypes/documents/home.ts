@@ -25,14 +25,19 @@ export const home = defineType({
       options: {
         hotspot: true,
       },
-      fields: [
-        defineField({
-          name: "alt",
-          type: "string",
-          title: "Alt Text",
+    }),
+    defineField({
+      name: "herobannerOptions",
+      title: "Herobanner Options",
+      type: "array",
+      of: [
+        {
+          type: "reference",
+          to: { type: "blogCategory" },
           validation: (Rule) => Rule.required(),
-        }),
+        },
       ],
+      validation: (Rule) => Rule.max(4).min(4).required(),
     }),
   ],
 });

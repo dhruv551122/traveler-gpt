@@ -95,7 +95,7 @@ const blockContent = defineType({
     },
     {
       name: "styledTable",
-      type: "styledTable",
+      type: "richTableBlock",
       validation: (Rule) => Rule.required(),
     },
   ],

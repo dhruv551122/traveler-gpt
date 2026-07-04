@@ -26,5 +26,11 @@ export default defineType({
         rule.required(),
       ],
     }),
+    defineField({
+      name: "seoImage",
+      title: "Seo Image",
+      type: "image",
+      validation: (Rule) => Rule.assetRequired(),
+    }),
   ],
 });

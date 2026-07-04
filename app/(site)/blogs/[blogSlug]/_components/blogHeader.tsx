@@ -1,0 +1,36 @@
+import { BlogBySlugQueryResult } from "@/sanity.types"
+import { Eye, Share } from "lucide-react"
+import BlogViews from "./blogViews"
+import { SanityImage } from "@/components/common/sanityImage"
+import ShareButton from "./shareButton"
+
+const BlogHeader = ({ data }: { data: NonNullable<BlogBySlugQueryResult> }) => {
+    console.log(data.heroImage.asset?.altText)
+    const formattedDate = new Date(data._updatedAt).toLocaleDateString('en-US', {
+        year: "numeric",
+        month: "short",
+        day: 'numeric',
+    })
+
+    return (<div className="max-width-container max-content-pannel">
+        <div className="flex flex-col gap-8 items-center justify-center">
+            <div className="flex flex-col gap-4 items-center justify-center max-w-4xl text-center">
+                <div className="flex note gap-2 flex-wrap items-center justify-center w-full">
+                    <span className="text-stone-500">{formattedDate}</span> <span className="text-stone-500">•</span>
+                    {data.categories.map(category => <span key={category._id} className="py-1 px-2 bg-deep-bright-red text-white  rounded-[5px]">{category.label}</span>)}
+                </div>
+                <h1 className="title">{data.title}</h1>
+                <div className="flex gap-2 items-center flex-wrap justify-center note w-full text-stone-500">
+                    <span>by {data.author.authorName}</span> |
+                    <span className="flex items-center gap-1"><Eye /> <BlogViews slug={data.slug.current} /></span>
+                </div>
+            </div>
+            <div className="flex flex-col w-full gap-2">
+                <ShareButton text={data.description} title={data.title} url={`${process.env.NEXT_PUBLIC_DOMAIN_URL}/blogs/${data.slug}`} />
+                <SanityImage className="w-full h-auto object-contain" src={data.heroImage} alt={data.heroImage.asset?.altText || ''} width={1000} height={1000} />
+            </div>
+        </div>
+    </div>)
+}
+
+export default BlogHeader

@@ -38,7 +38,7 @@ const blog = defineType({
     defineField({
       name: "description",
       title: "Description",
-      type: "string",
+      type: "text",
       group: "blog",
       validation: (Rule) => Rule.required(),
     }),
@@ -50,14 +50,6 @@ const blog = defineType({
         hotspot: true,
       },
       group: "blog",
-      fields: [
-        defineField({
-          name: "alt",
-          title: "Alt Text",
-          type: "string",
-          validation: (Rule) => Rule.required(),
-        }),
-      ],
       validation: (Rule) => Rule.required().assetRequired(),
     }),
     defineField({
@@ -101,10 +93,8 @@ const blog = defineType({
       category3: "categories.3.label",
     },
     prepare(selection) {
-      console.log(selection);
       const { title, media, category0, category1, category2, category3 } =
         selection;
-      // console.log(categories);
       const categories = [category0, category1, category2].filter(Boolean);
       const subTitle = categories.join(" | ");
       const hasMoreCategories = Boolean(category3);

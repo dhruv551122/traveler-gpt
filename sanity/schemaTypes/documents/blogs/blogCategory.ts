@@ -1,6 +1,5 @@
 import { orderRankField } from "@sanity/orderable-document-list";
 import { NotebookTabs } from "lucide-react";
-import { Label } from "radix-ui";
 import { defineField, defineType } from "sanity";
 
 const blogCategory = defineType({

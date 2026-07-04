@@ -47,7 +47,8 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
-  --font-nunitoSans: var(--nunitoSans);
+  --font-nunito-sans: var(--font-nunito-sans);
+  --font-google-sans: var(--font-google-sans);
 
   --color-deep-bright-red: var(--color-deep-bright-red);
   --color-gunmetal-black: var(--color-gunmetal-black);
@@ -58,7 +59,7 @@
     @apply mx-auto max-w-420;
   }
   .max-content-pannel {
-    @apply px-4 py-8 max-w-340 md:p-10 lg:py-18 mx-auto;
+    @apply px-4 py-8 md:p-10 lg:py-18 mx-auto;
   }
   .no-scrollbar::-webkit-scrollbar {
     display: none;
@@ -105,6 +106,9 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
+  --font-google-sans: "Google Sans", sans-serif;
+  --font-nunito-sans: "Nunito Sans", sans-serif;
+
   --color-deep-bright-red: #ab0101;
   --color-gunmetal-black: #181a1c;
 }
@@ -150,4 +154,32 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@utility heading {
+  @apply font-bold text-base sm:text-lg;
+}
+
+@utility title {
+  @apply font-semibold text-4xl sm:text-5xl leading-[120%];
+}
+
+@utility subtitle {
+  @apply font-semibold text-[22px] sm:text-[26px] leading-[115%];
+}
+
+@utility subtitle-2 {
+  @apply font-medium text-lg sm:text-xl leading-[115%];
+}
+
+@utility description {
+  @apply font-normal text-[15px] sm:text-[15px] font-nunito-sans leading-[115%];
+}
+
+@utility button-text {
+  @apply font-normal text-[15px] leading-[115%];
+}
+
+@utility note {
+  @apply font-normal text-sm leading-[110%];
 }
