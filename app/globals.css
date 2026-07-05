@@ -181,5 +181,5 @@
 }
 
 @utility note {
-  @apply font-normal text-sm leading-[110%];
+  @apply font-normal text-xs leading-[110%];
 }

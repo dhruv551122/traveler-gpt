@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${nunitoSans.variable} ${googleSans.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-google-sans">{children}</body>
+      <body className="min-h-full flex flex-col font-google-sans text-gunmetal-black">{children}</body>
     </html>
   );
 }

@@ -30,7 +30,7 @@ export default defineType({
       name: "seoImage",
       title: "Seo Image",
       type: "image",
-      validation: (Rule) => Rule.assetRequired(),
+      validation: (Rule) => Rule.required().assetRequired(),
     }),
   ],
 });

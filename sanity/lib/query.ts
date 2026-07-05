@@ -1,12 +1,29 @@
 import { groq } from "next-sanity";
 
+export const settingsQuery = groq`
+    *[ _type == "settings" && _id == "settings"][0]{
+        ...,
+        "blogCategories": *[ _type == "blogCategory" ]{
+            ...,
+        },
+        "blogs": *[ _type == "blog"]{
+            ...,
+            heroImage{
+                ...,
+                asset->
+            },
+            categories[]->,
+            author->,
+        }
+    }
+`;
+
 export const homePageQuery = groq`*[ _type == 'homePage' && _id == 'homePage'][0]{
     ...,
     herobannerImage{
             ...,
             asset->
         },
-    herobannerOptions[]->,
     "blogs": *[ _type == 'blog']{
         ...,
         heroImage{

@@ -2,6 +2,7 @@
 
 import {
   SanityImageAsset,
+  SanityImageAssetReference,
   SanityImageCrop,
   SanityImageHotspot,
 } from "@/sanity.types";
@@ -9,10 +10,10 @@ import { urlFor } from "@/sanity/lib/image";
 import Image, { ImageProps } from "next/image";
 
 type SanityImageObject = {
-  asset: SanityImageAsset;
+  asset: SanityImageAsset | SanityImageAssetReference;
   media?: unknown;
-  hotspot?: SanityImageHotspot;
-  crop?: SanityImageCrop;
+  hotspot?: SanityImageHotspot | undefined;
+  crop?: SanityImageCrop | undefined;
   _type: "image";
 };
 
@@ -25,7 +26,12 @@ type Props = Omit<ImageProps, "src" | "alt"> & {
 
 export const SanityImage = ({ src, ref, alt, onLoad, ...props }: Props) => {
   // Ensure alt is not undefined or empty, fallback to a safe default if needed
-  const altText = alt || src.asset.altText || "Tulsi Pathology Lab";
+  const altText =
+    alt ??
+    (src?.asset?._type === "sanity.imageAsset"
+      ? src.asset.altText
+      : undefined) ??
+    "TravelerGPT";
 
   return (
     <Image

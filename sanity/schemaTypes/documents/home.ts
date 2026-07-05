@@ -26,18 +26,5 @@ export const home = defineType({
         hotspot: true,
       },
     }),
-    defineField({
-      name: "herobannerOptions",
-      title: "Herobanner Options",
-      type: "array",
-      of: [
-        {
-          type: "reference",
-          to: { type: "blogCategory" },
-          validation: (Rule) => Rule.required(),
-        },
-      ],
-      validation: (Rule) => Rule.max(4).min(4).required(),
-    }),
   ],
 });
