@@ -2,7 +2,7 @@
 
 import useActiveHeading from "@/hooks/useActiveHeading";
 import { cn, extractTableContentData } from "@/lib/utils";
-import { BlockContent, BlogBySlugQueryResult } from "@/sanity.types";
+import { BlogBySlugQueryResult } from "@/sanity.types";
 import type { HTMLProps } from "react";
 import ShareButton from "./shareButton";
 
@@ -12,15 +12,15 @@ const TableOfContent = ({ data, className }: { data: NonNullable<BlogBySlugQuery
     const handleScroll = (id: string) => {
         const element = document.getElementById(id);
         if (!element) return null;
-        const y = element?.getBoundingClientRect().top + window.scrollY - 80;
+        const y = element?.getBoundingClientRect().top + window.scrollY - 120;
         scrollTo({ top: y, behavior: "smooth" });
     };
 
     const activeId = useActiveHeading(tableOfContent);
     return (
         <div className={className}>
-            <div className="sm:sticky sm:top-8 flex flex-col gap-4">
-                <ShareButton text={data.description} title={data.title} url={`${process.env.NEXT_PUBLIC_DOMAIN_URL}/blogs/${data.slug}`} className="w-fit" />
+            <div className="sm:sticky top-22 md:top-28 flex flex-col gap-4">
+                <ShareButton text={data.description} title={data.title} className="w-fit" />
                 <div className="pb-2 border-b border-gray-300 ">
                     <h4 className="pb-2 mb-2 text-xl font-semibold border-b border-gray-300">
                         Table of Content

@@ -4,7 +4,9 @@ import { HomePageQueryResult } from "@/sanity.types";
 const BlogList = ({ data }: { data: NonNullable<HomePageQueryResult> }) => {
   return (
     <div className="max-content-pannel">
-      <BlogCarousel blogs={data.blogs} />
+      <div className="flex  flex-col gap-6">
+        <BlogCarousel blogs={data.trendingBlogs.blogs} title={data.trendingBlogs.title} />
+      </div>
     </div>
   );
 };

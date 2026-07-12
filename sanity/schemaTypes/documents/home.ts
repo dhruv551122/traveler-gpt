@@ -9,22 +9,105 @@ export const home = defineType({
   groups: [
     { name: "seo", title: "Seo" },
     { name: "herobanner", title: "Herobanner" },
+    { name: "pageContent", title: "Page Content" },
   ],
   fields: [
     defineField({
-      name: "herobannerTitle",
-      title: "Herobanner Title",
-      type: "string",
+      name: "seo",
+      title: "Seo",
+      type: "seo",
+      group: "seo",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "herobannerImage",
-      title: "Herobanner Image",
-      type: "image",
-      validation: (Rule) => Rule.required().assetRequired(),
-      options: {
-        hotspot: true,
-      },
+      name: "trendingBlogs",
+      title: "Trending Blogs",
+      type: "object",
+      fields: [
+        defineField({
+          name: "title",
+          title: "Title",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "blogs",
+          title: "Blogs",
+          type: "array",
+          of: [
+            {
+              type: "reference",
+              to: { type: "blog" },
+              validation: (Rule) => Rule.required(),
+            },
+          ],
+          validation: (Rule) => Rule.required(),
+        }),
+      ],
+      group: "pageContent",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "tagWiseBlogs1",
+      title: "Tag Wise Blog 1",
+      type: "object",
+      fields: [
+        defineField({
+          name: "title",
+          title: "Title",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "tags",
+          title: "Tags",
+          type: "array",
+          of: [
+            {
+              type: "reference",
+              to: { type: "blogTag" },
+              validation: (Rule) => Rule.required(),
+            },
+          ],
+          validation: (Rule) => Rule.required(),
+        }),
+      ],
+      group: "pageContent",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "tagWiseBlogs2",
+      title: "Tag Wise Blog 2",
+      type: "object",
+      fields: [
+        defineField({
+          name: "title",
+          title: "Title",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "tags",
+          title: "Tags",
+          type: "array",
+          of: [
+            {
+              type: "reference",
+              to: { type: "blogTag" },
+              validation: (Rule) => Rule.required(),
+            },
+          ],
+          validation: (Rule) => Rule.required(),
+        }),
+      ],
+      group: "pageContent",
+      validation: (Rule) => Rule.required(),
     }),
   ],
+  preview: {
+    select: {
+      title: "seo.seoTitle",
+      subtitle: "seo.seoDescription",
+    },
+  },
 });

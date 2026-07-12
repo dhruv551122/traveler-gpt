@@ -125,6 +125,23 @@ export type Link = {
   openInNewTab: boolean;
 };
 
+export type BlogTag = {
+  _id: string;
+  _type: "blogTag";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  label: string;
+  slug: Slug;
+  orderRank?: string;
+};
+
+export type Slug = {
+  _type: "slug";
+  current: string;
+  source?: string;
+};
+
 export type BlogAuthorReference = {
   _ref: string;
   _type: "reference";
@@ -132,11 +149,11 @@ export type BlogAuthorReference = {
   [internalGroqTypeReferenceTo]?: "blogAuthor";
 };
 
-export type BlogCategoryReference = {
+export type BlogTagReference = {
   _ref: string;
   _type: "reference";
   _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "blogCategory";
+  [internalGroqTypeReferenceTo]?: "blogTag";
 };
 
 export type Blog = {
@@ -158,10 +175,10 @@ export type Blog = {
   };
   content: BlockContent;
   author: BlogAuthorReference;
-  categories: Array<
+  tags: Array<
     {
       _key: string;
-    } & BlogCategoryReference
+    } & BlogTagReference
   >;
   uplodedAt?: string;
   orderRank?: string;
@@ -181,12 +198,6 @@ export type SanityImageHotspot = {
   y: number;
   height: number;
   width: number;
-};
-
-export type Slug = {
-  _type: "slug";
-  current: string;
-  source?: string;
 };
 
 export type BlogAuthor = {
@@ -245,19 +256,43 @@ export type Settings = {
   instagramUrl: string;
 };
 
+export type BlogReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "blog";
+};
+
 export type HomePage = {
   _id: string;
   _type: "homePage";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  herobannerTitle: string;
-  herobannerImage: {
-    asset: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
+  seo: Seo;
+  trendingBlogs: {
+    title: string;
+    blogs: Array<
+      {
+        _key: string;
+      } & BlogReference
+    >;
+  };
+  tagWiseBlogs1: {
+    title: string;
+    tags: Array<
+      {
+        _key: string;
+      } & BlogTagReference
+    >;
+  };
+  tagWiseBlogs2: {
+    title: string;
+    tags: Array<
+      {
+        _key: string;
+      } & BlogTagReference
+    >;
   };
 };
 
@@ -444,15 +479,17 @@ export type AllSanitySchemaTypes =
   | BlockContent
   | Seo
   | Link
+  | BlogTag
+  | Slug
   | BlogAuthorReference
-  | BlogCategoryReference
+  | BlogTagReference
   | Blog
   | SanityImageCrop
   | SanityImageHotspot
-  | Slug
   | BlogAuthor
   | BlogCategory
   | Settings
+  | BlogReference
   | HomePage
   | HighlightColor
   | SimplerColor
@@ -474,7 +511,7 @@ export type AllSanitySchemaTypes =
 
 // Source: sanity/lib/query.ts
 // Variable: settingsQuery
-// Query: *[ _type == "settings" && _id == "settings"][0]{        ...,        "blogCategories": *[ _type == "blogCategory" ]{            ...,        },        "blogs": *[ _type == "blog"]{            ...,            heroImage{                ...,                asset->            },            categories[]->,            author->,        }    }
+// Query: *[ _type == "settings" && _id == "settings"][0]{        ...,        "blogTags": *[ _type == "blogTag" ]{            ...,        },        "blogs": *[ _type == "blog"]{            ...,            heroImage{                ...,                asset->            },            tags[]->,            author->,        }    }
 export type SettingsQueryResult = {
   _id: "settings";
   _type: "settings";
@@ -508,9 +545,9 @@ export type SettingsQueryResult = {
   footerText: BlockContent;
   facebookUrl: string;
   instagramUrl: string;
-  blogCategories: Array<{
+  blogTags: Array<{
     _id: string;
-    _type: "blogCategory";
+    _type: "blogTag";
     _createdAt: string;
     _updatedAt: string;
     _rev: string;
@@ -566,9 +603,9 @@ export type SettingsQueryResult = {
       authorName: string;
       orderRank?: string;
     };
-    categories: Array<{
+    tags: Array<{
       _id: string;
-      _type: "blogCategory";
+      _type: "blogTag";
       _createdAt: string;
       _updatedAt: string;
       _rev: string;
@@ -583,42 +620,133 @@ export type SettingsQueryResult = {
 
 // Source: sanity/lib/query.ts
 // Variable: homePageQuery
-// Query: *[ _type == 'homePage' && _id == 'homePage'][0]{    ...,    herobannerImage{            ...,            asset->        },    "blogs": *[ _type == 'blog']{        ...,        heroImage{            ...,            asset->        },        author->,        categories[]->,    },    "categories": *[ _type == 'blogCategory' ]{        ...,    }}
+// Query: *[ _type == 'homePage' && _id == 'homePage'][0]{    ...,    seo{        ...,        seoImage{            ...,            asset->        }    },    herobannerImage{            ...,            asset->        },    "blogs": *[ _type == 'blog'] | order(coalesce(uploadedAt, _createdAt) desc) {        ...,        heroImage{            ...,            asset->        },        author->,        tags[]->,    },    "tags": *[ _type == 'blogTag' ]{        ...,    },    trendingBlogs{        ...,        blogs[]->{            ...,            heroImage{            ...,            asset->        },        author->,        tags[]->,        }    },    tagWiseBlogs1{        ...,        tags[]->{            ...,                "blogs": *[ _type == "blog" && tag._ref == ^._id ] | order(coalesce(uplodedAt, _createdAt) desc)[0...10]{                    _id,                    _createdAt,                    _updated,                    title,                    slug,                    description,                    heroImage,                    author->{                        _id,                        authorName                    },                    tag->{                        _id,                        label,                    },                    uplodedAt                }        }    }     }
 export type HomePageQueryResult = {
   _id: "homePage";
   _type: "homePage";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  herobannerTitle: string;
-  herobannerImage: {
-    asset: {
+  seo: {
+    _type: "seo";
+    seoTitle: string;
+    seoDescription: string;
+    seoImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        originalFilename?: string;
+        label?: string;
+        title?: string;
+        description?: string;
+        altText?: string;
+        sha1hash: string;
+        extension: string;
+        mimeType: string;
+        size: number;
+        assetId: string;
+        uploadId?: string;
+        path: string;
+        url: string;
+        metadata?: SanityImageMetadata;
+        source?: SanityAssetSourceData;
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+  };
+  trendingBlogs: {
+    title: string;
+    blogs: Array<{
       _id: string;
-      _type: "sanity.imageAsset";
+      _type: "blog";
       _createdAt: string;
       _updatedAt: string;
       _rev: string;
-      originalFilename?: string;
-      label?: string;
-      title?: string;
-      description?: string;
-      altText?: string;
-      sha1hash: string;
-      extension: string;
-      mimeType: string;
-      size: number;
-      assetId: string;
-      uploadId?: string;
-      path: string;
-      url: string;
-      metadata?: SanityImageMetadata;
-      source?: SanityAssetSourceData;
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
+      seo: Seo;
+      title: string;
+      slug: Slug;
+      description: string;
+      heroImage: {
+        asset: {
+          _id: string;
+          _type: "sanity.imageAsset";
+          _createdAt: string;
+          _updatedAt: string;
+          _rev: string;
+          originalFilename?: string;
+          label?: string;
+          title?: string;
+          description?: string;
+          altText?: string;
+          sha1hash: string;
+          extension: string;
+          mimeType: string;
+          size: number;
+          assetId: string;
+          uploadId?: string;
+          path: string;
+          url: string;
+          metadata?: SanityImageMetadata;
+          source?: SanityAssetSourceData;
+        };
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        _type: "image";
+      };
+      content: BlockContent;
+      author: {
+        _id: string;
+        _type: "blogAuthor";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        authorName: string;
+        orderRank?: string;
+      };
+      tags: Array<{
+        _id: string;
+        _type: "blogTag";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        label: string;
+        slug: Slug;
+        orderRank?: string;
+      }>;
+      uplodedAt?: string;
+      orderRank?: string;
+    }>;
   };
+  tagWiseBlogs1: {
+    title: string;
+    tags: Array<{
+      _id: string;
+      _type: "blogTag";
+      _createdAt: string;
+      _updatedAt: string;
+      _rev: string;
+      label: string;
+      slug: Slug;
+      orderRank?: string;
+      blogs: Array<never>;
+    }>;
+  };
+  tagWiseBlogs2: {
+    title: string;
+    tags: Array<
+      {
+        _key: string;
+      } & BlogTagReference
+    >;
+  };
+  herobannerImage: null;
   blogs: Array<{
     _id: string;
     _type: "blog";
@@ -667,9 +795,9 @@ export type HomePageQueryResult = {
       authorName: string;
       orderRank?: string;
     };
-    categories: Array<{
+    tags: Array<{
       _id: string;
-      _type: "blogCategory";
+      _type: "blogTag";
       _createdAt: string;
       _updatedAt: string;
       _rev: string;
@@ -680,9 +808,9 @@ export type HomePageQueryResult = {
     uplodedAt?: string;
     orderRank?: string;
   }>;
-  categories: Array<{
+  tags: Array<{
     _id: string;
-    _type: "blogCategory";
+    _type: "blogTag";
     _createdAt: string;
     _updatedAt: string;
     _rev: string;
@@ -694,14 +822,14 @@ export type HomePageQueryResult = {
 
 // Source: sanity/lib/query.ts
 // Variable: blogsByTitleSearch
-// Query: *[_type == 'blog' && title match $searchPrefix] | order(score desc){        _id,        title,        description,        categories->,        "slug": slug.current,        heroImage{            ...,            asset->        },    }
+// Query: *[_type == 'blog' && title match $searchPrefix] | order(score desc){        _id,        title,        description,        tags->,        "slug": slug.current,        heroImage{            ...,            asset->        },    }
 export type BlogsByTitleSearchResult = Array<{
   _id: string;
   title: string;
   description: string;
-  categories: Array<{
+  tags: Array<{
     _id: string;
-    _type: "blogCategory";
+    _type: "blogTag";
     _createdAt: string;
     _updatedAt: string;
     _rev: string;
@@ -742,14 +870,46 @@ export type BlogsByTitleSearchResult = Array<{
 
 // Source: sanity/lib/query.ts
 // Variable: blogBySlugQuery
-// Query: *[ _type == "blog" && slug.current == $blogSlug][0]{        ...,        heroImage{            ...,            asset->        },        author->,        categories[]->,    }
+// Query: *[ _type == "blog" && slug.current == $blogSlug][0]{        ...,        seo{            ...,            seoImage{                ...,                asset->            }        },        heroImage{            ...,            asset->        },        author->,        tags[]->,    }
 export type BlogBySlugQueryResult = {
   _id: string;
   _type: "blog";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  seo: Seo;
+  seo: {
+    _type: "seo";
+    seoTitle: string;
+    seoDescription: string;
+    seoImage: {
+      asset: {
+        _id: string;
+        _type: "sanity.imageAsset";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        originalFilename?: string;
+        label?: string;
+        title?: string;
+        description?: string;
+        altText?: string;
+        sha1hash: string;
+        extension: string;
+        mimeType: string;
+        size: number;
+        assetId: string;
+        uploadId?: string;
+        path: string;
+        url: string;
+        metadata?: SanityImageMetadata;
+        source?: SanityAssetSourceData;
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+  };
   title: string;
   slug: Slug;
   description: string;
@@ -791,9 +951,9 @@ export type BlogBySlugQueryResult = {
     authorName: string;
     orderRank?: string;
   };
-  categories: Array<{
+  tags: Array<{
     _id: string;
-    _type: "blogCategory";
+    _type: "blogTag";
     _createdAt: string;
     _updatedAt: string;
     _rev: string;
@@ -809,9 +969,9 @@ export type BlogBySlugQueryResult = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '\n    *[ _type == "settings" && _id == "settings"][0]{\n        ...,\n        "blogCategories": *[ _type == "blogCategory" ]{\n            ...,\n        },\n        "blogs": *[ _type == "blog"]{\n            ...,\n            heroImage{\n                ...,\n                asset->\n            },\n            categories[]->,\n            author->,\n        }\n    }\n': SettingsQueryResult;
-    "*[ _type == 'homePage' && _id == 'homePage'][0]{\n    ...,\n    herobannerImage{\n            ...,\n            asset->\n        },\n    \"blogs\": *[ _type == 'blog']{\n        ...,\n        heroImage{\n            ...,\n            asset->\n        },\n        author->,\n        categories[]->,\n    },\n    \"categories\": *[ _type == 'blogCategory' ]{\n        ...,\n    }\n}\n": HomePageQueryResult;
-    "\n    *[_type == 'blog' && title match $searchPrefix] | order(score desc){\n        _id,\n        title,\n        description,\n        categories->,\n        \"slug\": slug.current,\n        heroImage{\n            ...,\n            asset->\n        },\n    }\n": BlogsByTitleSearchResult;
-    '\n    *[ _type == "blog" && slug.current == $blogSlug][0]{\n        ...,\n        heroImage{\n            ...,\n            asset->\n        },\n        author->,\n        categories[]->,\n    }\n': BlogBySlugQueryResult;
+    '\n    *[ _type == "settings" && _id == "settings"][0]{\n        ...,\n        "blogTags": *[ _type == "blogTag" ]{\n            ...,\n        },\n        "blogs": *[ _type == "blog"]{\n            ...,\n            heroImage{\n                ...,\n                asset->\n            },\n            tags[]->,\n            author->,\n        }\n    }\n': SettingsQueryResult;
+    "*[ _type == 'homePage' && _id == 'homePage'][0]{\n    ...,\n    seo{\n        ...,\n        seoImage{\n            ...,\n            asset->\n        }\n    },\n    herobannerImage{\n            ...,\n            asset->\n        },\n    \"blogs\": *[ _type == 'blog'] | order(coalesce(uploadedAt, _createdAt) desc) {\n        ...,\n        heroImage{\n            ...,\n            asset->\n        },\n        author->,\n        tags[]->,\n    },\n    \"tags\": *[ _type == 'blogTag' ]{\n        ...,\n    },\n    trendingBlogs{\n        ...,\n        blogs[]->{\n            ...,\n            heroImage{\n            ...,\n            asset->\n        },\n        author->,\n        tags[]->,\n        }\n    },\n    tagWiseBlogs1{\n        ...,\n        tags[]->{\n            ...,\n                \"blogs\": *[ _type == \"blog\" && tag._ref == ^._id ] | order(coalesce(uplodedAt, _createdAt) desc)[0...10]{\n                    _id,\n                    _createdAt,\n                    _updated,\n                    title,\n                    slug,\n                    description,\n                    heroImage,\n                    author->{\n                        _id,\n                        authorName\n                    },\n                    tag->{\n                        _id,\n                        label,\n                    },\n                    uplodedAt\n                }\n        }\n    }\n     \n}\n": HomePageQueryResult;
+    "\n    *[_type == 'blog' && title match $searchPrefix] | order(score desc){\n        _id,\n        title,\n        description,\n        tags->,\n        \"slug\": slug.current,\n        heroImage{\n            ...,\n            asset->\n        },\n    }\n": BlogsByTitleSearchResult;
+    '\n    *[ _type == "blog" && slug.current == $blogSlug][0]{\n        ...,\n        seo{\n            ...,\n            seoImage{\n                ...,\n                asset->\n            }\n        },\n        heroImage{\n            ...,\n            asset->\n        },\n        author->,\n        tags[]->,\n    }\n': BlogBySlugQueryResult;
   }
 }

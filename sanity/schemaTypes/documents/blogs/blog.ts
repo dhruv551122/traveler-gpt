@@ -67,12 +67,20 @@ const blog = defineType({
       to: [{ type: "blogAuthor" }],
       validation: (Rule) => Rule.required(),
     }),
+    // defineField({
+    //   name: "categories",
+    //   title: "Categories",
+    //   type: "array",
+    //   group: "blog",
+    //   of: [{ type: "reference", to: { type: "blogCategory" } }],
+    //   validation: (Rule) => Rule.required(),
+    // }),
     defineField({
-      name: "categories",
-      title: "Categories",
+      name: "tags",
+      title: "Tags",
       type: "array",
       group: "blog",
-      of: [{ type: "reference", to: { type: "blogCategory" } }],
+      of: [{ type: "reference", to: { type: "blogTag" } }],
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -87,20 +95,21 @@ const blog = defineType({
     select: {
       title: "title",
       media: "heroImage",
-      category0: "categories.0.label",
-      category1: "categories.1.label",
-      category2: "categories.2.label",
-      category3: "categories.3.label",
+      tags0: "tags.0.label",
+      tags1: "tags.1.label",
+      tags2: "tags.2.label",
+      tags3: "tags.3.label",
+      uplodedAt: "uplodedAt",
+      _updatedAt: "_updatedAt",
     },
     prepare(selection) {
-      const { title, media, category0, category1, category2, category3 } =
-        selection;
-      const categories = [category0, category1, category2].filter(Boolean);
-      const subTitle = categories.join(" | ");
-      const hasMoreCategories = Boolean(category3);
+      const { title, media, tags0, tags1, tags2, tags3 } = selection;
+      const tags = [tags0, tags1, tags2].filter(Boolean);
+      const subTitle = tags.join(" | ");
+      const hasMoreTags = Boolean(tags3);
       return {
         title: title,
-        subtitle: hasMoreCategories ? subTitle + " | ..." : subTitle,
+        subtitle: hasMoreTags ? subTitle + " | ..." : subTitle,
         media: media,
       };
     },

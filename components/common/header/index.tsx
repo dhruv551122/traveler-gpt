@@ -23,7 +23,7 @@ import { SanityImage } from '../sanityImage'
 // }
 
 function Hamburger({ open, onClick }: { open: boolean; onClick: () => void }) {
-  const bar = open ? 'bg-white' : 'bg-deep-bright-red'
+  const bar = open ? 'bg-white' : 'bg-gunmetal-black'
   return (
     <button
       type="button"
@@ -181,7 +181,7 @@ export function Header({ data }: { data: NonNullable<SettingsQueryResult> }) {
       /> */}
       <header
         className={cn(
-          'fixed left-0 top-0 z-[999] w-full overflow-hidden pt-[15px] transition-all duration-500  md:pt-5',
+          'fixed left-0 top-0 z-[999] w-full overflow-hidden pt-[15px] transition-all duration-500 md:pt-5',
           menuOpen
             ? 'h-screen bg-deep-bright-red'
             : 'h-[73.64px] bg-white md:h-[98.19px]'
@@ -195,9 +195,9 @@ export function Header({ data }: { data: NonNullable<SettingsQueryResult> }) {
               className="relative block h-[43.64px] w-auto md:h-[58.19px] md:w-auto"
             >
               {/* <SanityImage src={data.headerLogo} className={cn("h-full w-auto", menuOpen && "text-white")} width={1000} height={1000} /> */}
-              <Logo className={cn("h-full w-auto object-contain", menuOpen && "text-white")} />
+              <Logo className={cn("h-full w-auto object-contain duration-300", menuOpen && "text-white")} />
             </Link>
-            <div className="hidden lg:flex gap-2 items-center">
+            <div className="hidden lg:flex pr-[96px] gap-2 items-center">
               <Link
                 href={data.facebookUrl}
                 target="_blank"
@@ -205,7 +205,7 @@ export function Header({ data }: { data: NonNullable<SettingsQueryResult> }) {
                 className="shrink-0"
               >
                 <FacebookIcon
-                  className={cn("size-5", menuOpen ? 'text-white' : 'text-primary')}
+                  className={cn("size-5 duration-300", menuOpen ? 'text-white' : 'text-primary')}
                 />
               </Link>
               <Link
@@ -215,7 +215,7 @@ export function Header({ data }: { data: NonNullable<SettingsQueryResult> }) {
                 className="shrink-0"
               >
                 <InstagramIcon
-                  className={cn("size-5", menuOpen ? 'text-white' : 'text-primary')}
+                  className={cn("size-5 duration-300", menuOpen ? 'text-white' : 'text-primary')}
                 />
               </Link>
             </div>
@@ -230,11 +230,11 @@ export function Header({ data }: { data: NonNullable<SettingsQueryResult> }) {
         </div>
         <div
           className={cn(
-            'relative z-[-1] m-0 md:h-[calc(100vh-150px)] w-full overflow-y-auto pt-0! p-4 transition-all duration-[1500ms] h-[calc(100vh-170px)]',
-            menuOpen ? 'opacity-100' : 'opacity-0'
+            'relative z-[-1] m-0  w-full  pt-0! p-4 transition-all duration-[1500ms]',
+            menuOpen ? 'opacity-100 h-[calc(100vh-73.64px)] overflow-y-auto md:h-[calc(100vh-98.19px)]' : 'opacity-0 overflow-hidden h-0'
           )}
         >
-          <ul className="absolute left-1/2  top-1/2 m-0 -translate-x-1/2 -translate-y-1/2 list-none flex flex-col justify-start gap-4 lg:gap-6 my-4">
+          <ul className={cn("absolute left-1/2  top-1/2 m-0 -translate-x-1/2 -translate-y-1/2 list-none flex flex-col justify-start gap-4 lg:gap-6 my-4 duration-600", menuOpen ? "opacity-100" : "opacity-0")}>
             {data.headerLinks.map((link, index) => (
               <li
                 key={link._key}

@@ -10,7 +10,7 @@ export default async function SiteLayout({
 }>) {
   const { data } = await sanityFetch<NonNullable<SettingsQueryResult>>({ query: settingsQuery })
   return (
-    <main className="font-nunitoSans">
+    <main className="font-nunitoSans md:pt-[98.18px] pt-[73.64]">
       <Header data={data} />
       {children}
       <SanityLive />

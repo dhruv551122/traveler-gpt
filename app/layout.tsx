@@ -27,8 +27,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${nunitoSans.variable} ${googleSans.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-google-sans text-gunmetal-black">{children}</body>
+    <html lang="en" className={`${nunitoSans.variable} ${googleSans.variable} h-full antialiased no-scrollbar`}>
+      <body className="min-h-full flex flex-col font-google-sans text-gunmetal-black ">{children}</body>
     </html>
   );
 }

@@ -5,9 +5,10 @@ import blogCategory from "./blogs/blogCategory";
 import { home } from "./home";
 import { StructureChild } from "..";
 import { settings } from "./settings";
+import blogTag from "./blogs/blogTag";
 
 export const singletons = [home, settings];
-export const multiTypes = [blogCategory, blogAuthor, blog];
+export const multiTypes = [blogCategory, blogAuthor, blog, blogTag];
 export const documents = [...singletons, ...multiTypes];
 
 export const structureList: StructureChild[] = [
@@ -25,6 +26,9 @@ export const structureList: StructureChild[] = [
       },
       {
         name: "blogCategory",
+      },
+      {
+        name: "blogTag",
       },
       {
         name: "blogAuthor",

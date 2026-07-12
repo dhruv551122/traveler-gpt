@@ -102,7 +102,7 @@ const SearchDialog = ({
                     }
                 }}
             >
-                <SearchIcon className={cn("hover:text-gunmetal-black duration-300 cursor-pointer text-deep-bright-red", menuOpen && "text-white")} />
+                <SearchIcon className={cn("text-gunmetal-black duration-300 cursor-pointer", menuOpen && "text-white")} />
             </DialogTrigger>
             <DialogContent
                 onCloseAutoFocus={() => {
