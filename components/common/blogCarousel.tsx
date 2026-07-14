@@ -45,7 +45,7 @@ const BlogCarousel = async ({
                   {blog.tags.map((tag) => (
                     <span
                       key={tag._id}
-                      className="py-2 px-3 rounded-full text-xs bg-deep-bright-red text-white"
+                      className="py-2 px-3 note rounded-full text-xs bg-deep-bright-red text-white"
                     >
                       {tag.label}
                     </span>
@@ -54,7 +54,7 @@ const BlogCarousel = async ({
                   <span className="text-stone-500 text-sm">{formateDate(blog.uplodedAt || blog._updatedAt)}</span>
                 </div>
                 <h3 className="group-hover:text-deep-bright-red duration-300 subtitle-2 min-h-[2lh] line-clamp-2">{blog.title}</h3>
-                <p className="line-clamp-3">{blog.description}</p>
+                <p className="line-clamp-3 description">{blog.description}</p>
               </div>
             </Link>
           </CarouselItem>

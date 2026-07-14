@@ -110,20 +110,20 @@ const SearchDialog = ({
                 }}
                 showCloseButton={false}
                 className={cn(
-                    "text-tuatara top-0 z-111 md:z-50 h-0 p-0 md:p-6  translate-y-0  backdrop-blur-xs rounded-none shadow-none border-none sm:max-w-none max-w-none data-[state=open]:h-screen w-screen flex justify-center bg-black/50",
+                    "text-tuatara top-0 z-1001 md:z-50 h-0 p-0 md:p-6 translate-y-0 backdrop-blur-xs rounded-none shadow-none border-none sm:max-w-none max-w-none data-[state=open]:h-screen w-screen flex justify-center bg-black/50",
                     isMobile && "rounded-none",
                 )}
             >
                 <div
                     className={cn(
-                        "p-4 bg-white -translate-y-full w-full md:rounded-lg shadow-lg md:w-2/3 py-6 lg:w-1/2 md:p-6 max-h-screen md:h-fit md:mt-14 transition-transform ease-in-out duration-300 flex flex-col gap-4",
+                        "p-4 bg-white -translate-y-full w-full md:rounded-lg shadow-lg md:w-2/3 py-6 lg:w-1/2 md:p-6 max-h-screen md:h-fit md:mt-20 transition-transform ease-in-out duration-300 flex flex-col gap-4",
                         isSearchOpen && "translate-y-0",
                     )}
                 >
                     <DialogHeader className="gap-4 text-left h-fit">
                         <div className="pb-2">
                             <div className="flex items-center justify-between">
-                                <DialogTitle className="text-2xl font-semibold text-deep-bright-red">
+                                <DialogTitle className="subtitle-2! text-deep-bright-red">
                                     Search a Topic
                                 </DialogTitle>
                                 <DialogClose className="cursor-pointer" asChild>
@@ -131,20 +131,20 @@ const SearchDialog = ({
                                 </DialogClose>
                             </div>
 
-                            <DialogDescription className="text-gray-500">
+                            <DialogDescription className="text-gray-500 description">
                                 Search articles, topics, or keywords to quickly find what you’re
                                 looking for.
                             </DialogDescription>
                         </div>
                         <div className="relative">
                             <SearchIcon
-                                size={isMobile ? 18 : 20}
+                                size={18}
                                 className="absolute text-gray-400 -translate-y-1/2 left-2 top-1/2"
                             />
                             <Input
                                 onChange={(e) => handleInputChange(e)}
                                 placeholder="Write here...."
-                                className="shadow-none outline-none p-0 text-base md:text-[18px]! pl-8 py-3"
+                                className="shadow-none description outline-none p-0 pl-8 py-3 h-auto"
                             />
                         </div>
                     </DialogHeader>
@@ -156,7 +156,7 @@ const SearchDialog = ({
                                         key={blog._id}
                                         href={`/blogs/${blog.slug.current}`}
                                         className={cn(
-                                            "flex flex-col sm:flex-row sm:items-center group justify-between gap-4 pb-4",
+                                            "flex flex-col sm:flex-row group gap-4 pb-4",
                                             searchResult.length - 1 !== index &&
                                             "border-b border-gray-300",
                                         )}
@@ -169,10 +169,10 @@ const SearchDialog = ({
                                             className="object-cover rounded-xl"
                                         />
                                         <div className="flex flex-col gap-4">
-                                            <div className="flex flex-wrap items-center gap-2 note">{blog.categories.map(category => <span key={category._id} className="py-1 px-3 rounded-[5px] border border-stone-500 shadow-inner">{category.label}</span>)}
+                                            <div className="flex flex-wrap items-center gap-2 note">{blog.tags.map(tag => <span key={tag._id} className="py-1 px-3 rounded-[5px] border border-stone-500 shadow-inner">{tag.label}</span>)}
                                                 • <span className="text-stone-500">{formateDate(blog.uplodedAt || blog._updatedAt)}</span>
                                             </div>
-                                            <h4 className="subtitle">{blog.title}</h4>
+                                            <h4 className="subtitle-2">{blog.title}</h4>
 
                                         </div>
                                         {/* <BlogHeader

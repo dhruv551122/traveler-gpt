@@ -18,7 +18,7 @@ const BlogDetail = ({ data }: { data: NonNullable<BlogBySlugQueryResult> }) => {
                 <h1 id="introduction" className="title">{data.title}</h1>
                 <div className="flex gap-2 items-center flex-wrap justify-center note w-full text-stone-500">
                     <span>by {data.author.authorName}</span> |
-                    <span className="flex items-center gap-1"><Eye className='size-4' /> <BlogViews slug={data.slug.current} /></span>
+                    <span className="flex items-center gap-1"><Eye className='size-4' /> <BlogViews id={data._id} /></span>
                 </div>
             </div>
             <div className="flex flex-col w-full gap-2 my-4">

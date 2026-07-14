@@ -59,10 +59,10 @@ export const homePageQuery = groq`*[ _type == 'homePage' && _id == 'homePage'][0
         ...,
         tags[]->{
             ...,
-                "blogs": *[ _type == "blog" && tag._ref == ^._id ] | order(coalesce(uplodedAt, _createdAt) desc)[0...10]{
+            "blogs": *[ _type == "blog" && ^._id in tags[]->_id ] | order(coalesce(uplodedAt, _createdAt) desc)[0...4]{
                     _id,
                     _createdAt,
-                    _updated,
+                    _updatedAt,
                     title,
                     slug,
                     description,
@@ -71,14 +71,38 @@ export const homePageQuery = groq`*[ _type == 'homePage' && _id == 'homePage'][0
                         _id,
                         authorName
                     },
-                    tag->{
+                    tags[]->{
+                        _id,
+                        label,
+                    },
+                    uplodedAt
+                }    
+        }
+    },
+    tagWiseBlogs2{
+        ...,
+        tags[]->{
+            ...,
+                "blogs": *[ _type == "blog" && ^._id in tags[]->_id ] | order(coalesce(uplodedAt, _createdAt) desc)[0...7]{
+                    _id,
+                    _createdAt,
+                    _updatedAt,
+                    title,
+                    slug,
+                    description,
+                    heroImage,
+                    author->{
+                        _id,
+                        authorName
+                    },
+                    tags[]->{
                         _id,
                         label,
                     },
                     uplodedAt
                 }
         }
-    }
+    },
      
 }
 `;
@@ -113,5 +137,26 @@ export const blogBySlugQuery = groq`
         },
         author->,
         tags[]->,
+    }
+`;
+
+export const mostPopularBlogsQuery = groq`
+    *[ _type == "blog" && _id in $id]{
+        _id,
+        _createdAt,
+        _updatedAt,
+        title,
+        slug,
+        description,
+        heroImage,
+        author->{
+            _id,
+            authorName
+        },
+        tags[]->{
+            _id,
+            label,
+        },
+        uplodedAt,
     }
 `;

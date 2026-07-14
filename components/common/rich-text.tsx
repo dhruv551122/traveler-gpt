@@ -30,7 +30,7 @@ const RichText: React.FC<Props> = ({
   highlightedTextClassName,
 }) => {
   const combinedClassNames = cn(
-    "prose prose-li:my-0 prose-li:pl-0 max-w-none prose-h:my-2! text-tuatara prose-h5:leading-[115%] prose-h4:leading-[115%] prose-h3:leading-[115%] prose-h2:leading-[115%] prose-h1:leading-[115%] prose-p:leading-[115%] prose-ol:leading-[115%] prose-ul:leading-[115%]",
+    "prose prose-li:my-0 prose-li:pl-0 max-w-none prose-h:my-2! prose-h5:leading-[115%] prose-h4:leading-[115%] prose-h3:leading-[115%] prose-h1:leading-[115%] prose-ol:leading-[115%] prose-ul:leading-[115%] prose-p:font-normal prose-p:text-[15px] prose-p:sm:text-[16px] prose-p:font-signika-negative prose-p:leading-[115%] prose-p:tracking-tight prose-li:description! prose-h2:subtitle-2!",
     className,
   );
 
@@ -69,7 +69,7 @@ const RichText: React.FC<Props> = ({
       ),
       h6: ({ children }: any) => <h6 className="my-4 ">{children}</h6>,
       normal: ({ children }: any) => (
-        <p className="mb-4 text-base min-h-px">{children}</p>
+        <p className="mb-4 text-base min-h-lh">{children}</p>
       ),
       center: ({ children }: any) => <p className="text-center">{children}</p>,
     },

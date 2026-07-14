@@ -3,10 +3,10 @@
 import { HTMLProps, useEffect, useState } from "react";
 
 export default function BlogViews({
-    slug,
+    id,
     className
 }: {
-    slug: string;
+    id: string;
     className?: HTMLProps<HTMLElement>['className']
 }) {
     const [views, setViews] = useState(0);
@@ -15,7 +15,7 @@ export default function BlogViews({
         async function track() {
             const res = await fetch("/api/views", {
                 method: "POST",
-                body: JSON.stringify({ slug }),
+                body: JSON.stringify({ id }),
             });
 
             const data = await res.json();
@@ -24,7 +24,7 @@ export default function BlogViews({
         }
 
         track();
-    }, [slug]);
+    }, [id]);
 
     return <span className={className}>{views} {views > 1 ? "views" : "view"}</span>;
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Google_Sans, Nunito_Sans } from "next/font/google";
+import { Google_Sans, Nunito_Sans, Signika_Negative } from "next/font/google";
 import "./globals.css";
 
 const nunitoSans = Nunito_Sans({
@@ -14,7 +14,11 @@ const googleSans = Google_Sans({
   preload: true,
 });
 
-
+const signikaNegative = Signika_Negative({
+  variable: "--font-signika-negative",
+  subsets: ["latin"],
+  preload: true,
+})
 
 export const metadata: Metadata = {
   title: "Traveler GPT",
@@ -27,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${nunitoSans.variable} ${googleSans.variable} h-full antialiased no-scrollbar`}>
+    <html lang="en" className={`${nunitoSans.variable} ${googleSans.variable} ${signikaNegative.variable} h-full antialiased no-scrollbar`}>
       <body className="min-h-full flex flex-col font-google-sans text-gunmetal-black ">{children}</body>
     </html>
   );

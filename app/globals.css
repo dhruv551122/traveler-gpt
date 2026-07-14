@@ -49,6 +49,7 @@
 
   --font-nunito-sans: var(--font-nunito-sans);
   --font-google-sans: var(--font-google-sans);
+  --font-signika-negative: var(--font-signika-negative);
 
   --color-deep-bright-red: var(--color-deep-bright-red);
   --color-gunmetal-black: var(--color-gunmetal-black);
@@ -108,6 +109,7 @@
 
   --font-google-sans: "Google Sans", sans-serif;
   --font-nunito-sans: "Nunito Sans", sans-serif;
+  --font-signika-negative: "Signika Negative", sans-serif;
 
   --color-deep-bright-red: #ab0101;
   --color-gunmetal-black: #181a1c;
@@ -161,25 +163,25 @@
 }
 
 @utility title {
-  @apply font-semibold text-3xl md:text-[42px] leading-[120%];
+  @apply font-semibold text-3xl md:text-[42px] leading-[120%] tracking-tighter;
 }
 
 @utility subtitle {
-  @apply font-semibold text-2xl md:text-4xl leading-[115%];
+  @apply font-semibold text-2xl md:text-4xl leading-[115%] tracking-tighter;
 }
 
 @utility subtitle-2 {
-  @apply font-semibold text-[22px] sm:text-[26px] leading-[115%];
+  @apply font-semibold text-[22px] sm:text-[26px] leading-[115%] tracking-tighter;
 }
 
 @utility description {
-  @apply font-normal text-[15px] sm:text-[15px] font-nunito-sans leading-[115%];
+  @apply font-normal text-[15px] sm:text-[16px] font-signika-negative leading-[115%] tracking-tight;
 }
 
 @utility button-text {
-  @apply font-normal text-[15px] leading-[115%];
+  @apply font-normal text-[15px] leading-[115%] tracking-tight;
 }
 
 @utility note {
-  @apply font-normal text-xs leading-[110%];
+  @apply font-normal font-signika-negative text-xs leading-[110%] tracking-tight;
 }

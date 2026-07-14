@@ -9,8 +9,6 @@ const ShareButton = ({ className, title, text }: { className?: HTMLProps<HTMLEle
 
     const handleShare = async () => {
         const shareData = {
-            title,
-            text,
             url: window.location.href,
         };
 
