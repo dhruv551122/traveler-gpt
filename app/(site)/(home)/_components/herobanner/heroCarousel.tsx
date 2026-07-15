@@ -5,12 +5,15 @@ import { useEffect, useMemo, useState } from "react"
 import { HomePageQueryResult } from "@/sanity.types"
 import { SanityImage } from "@/components/common/sanityImage"
 import Autoplay from "embla-carousel-autoplay"
+import Fade from 'embla-carousel-fade'
 import Link from "next/link"
 const DELAY = 5000;
 
 const HeroCarousel = ({ data }: { data: NonNullable<HomePageQueryResult>['blogs'] }) => {
     const [progress, setProgress] = useState(0);
     const [api, setApi] = useState<CarouselApi>();
+
+
 
     const [current, setCurrent] = useState(0);
 
@@ -39,6 +42,8 @@ const HeroCarousel = ({ data }: { data: NonNullable<HomePageQueryResult>['blogs'
         []
     );
 
+    const fade = Fade()
+
     useEffect(() => {
         const interval = setInterval(() => {
             const remaining = autoplay.timeUntilNext();
@@ -53,21 +58,23 @@ const HeroCarousel = ({ data }: { data: NonNullable<HomePageQueryResult>['blogs'
 
     return (
         <div className="max-w-full w-full flex gap-2 md:gap-4 items-center">
-            <Carousel setApi={setApi} plugins={[autoplay]} opts={{ loop: true }} className="w-full">
+            <Carousel setApi={setApi} plugins={[autoplay, fade]} opts={{ loop: true, }} className="w-full">
                 <CarouselContent className="w-full">
                     {
                         data.slice(0, 3).map(blog => <CarouselItem
                             key={blog._id}
                         // className="basis-3/4 md:basis-3/5 lg:basis-1/3 h-full"
                         >
-                            <Link href={`/blogs/${blog.slug.current}`} className="flex flex-col gap-4 h-full">
-                                <SanityImage
-                                    src={blog.heroImage}
-                                    alt={blog.heroImage.asset?.altText}
-                                    width={100}
-                                    height={100}
-                                    className="w-full min-h-[450px] max-h-[450px] object-cover"
-                                />
+                            <Link href={`/blogs/${blog.slug.current}`} className="flex flex-col gap-4 h-full group">
+                                <div className="w-full min-h-100 max-h-100 lg:min-h-[450px] lg:max-h-[450px] group overflow-hidden">
+                                    <SanityImage
+                                        src={blog.heroImage}
+                                        alt={blog.heroImage.asset?.altText}
+                                        width={100}
+                                        height={100}
+                                        className="group-hover:scale-105 duration-300 w-full h-full object-cover"
+                                    />
+                                </div>
                                 <h2 className="title line-clamp-2">{blog.title}</h2>
                             </Link>
                         </CarouselItem>)

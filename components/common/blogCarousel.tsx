@@ -33,13 +33,16 @@ const BlogCarousel = async ({
             className="basis-3/4 md:basis-3/5 lg:basis-1/3 h-full"
           >
             <Link href={`/blogs/${blog.slug.current}`} className="group flex flex-col gap-4">
-              <SanityImage
-                src={blog.heroImage}
-                alt={blog.heroImage.asset?.altText}
-                width={100}
-                height={100}
-                className="w-full h-[250px] object-cover"
-              />
+              <div className="w-full h-[250px] group overflow-hidden">
+
+                <SanityImage
+                  src={blog.heroImage}
+                  alt={blog.heroImage.asset?.altText}
+                  width={100}
+                  height={100}
+                  className="group-hover:scale-105 w-full h-full duration-300 object-cover"
+                />
+              </div>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center flex-wrap gap-2">
                   {blog.tags.map((tag) => (

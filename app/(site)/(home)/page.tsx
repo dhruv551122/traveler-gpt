@@ -5,7 +5,7 @@ import BlogList from "./_components/blogsList";
 import Herobanner from "./_components/herobanner";
 import { notFound } from "next/navigation";
 import { getPopularBLogsId } from "@/lib/redis";
-import MostPopularBlogs from "./_components/herobanner/mostPopularBlogs";
+import MostPopularBlogs from "./_components/mostPopularBlogs";
 import TagWiseBlogs1 from "./_components/tagWiseBlogs1";
 import TagWiseBlogs2 from "./_components/tagWiseBlogs2";
 
@@ -40,9 +40,9 @@ const HomePage = async () => {
   return (
     <div>
       <Herobanner data={homePage} />
-      <BlogList data={homePage} popularBlogs={popularBlogs} />
-      <MostPopularBlogs popularBlogs={popularBlogs} />
+      <BlogList data={homePage} />
       <TagWiseBlogs1 tagWiseBlogs1={homePage.tagWiseBlogs1} />
+      <MostPopularBlogs popularBlogs={popularBlogs} />
       <TagWiseBlogs2 tagWiseBlogs2={homePage.tagWiseBlogs2} />
     </div>
   );

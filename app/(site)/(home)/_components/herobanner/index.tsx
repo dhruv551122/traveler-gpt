@@ -6,7 +6,7 @@ import { formateDate } from "@/lib/utils"
 const Herobanner = ({ data }: { data: NonNullable<HomePageQueryResult> }) => {
     return (
         <div className="max-width-container max-content-pannel py-6!">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-4 gap-y-8">
                 <div className="lg:col-span-7">
                     <HeroCarousel data={data.blogs} />
                 </div>

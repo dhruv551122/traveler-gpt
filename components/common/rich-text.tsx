@@ -30,7 +30,7 @@ const RichText: React.FC<Props> = ({
   highlightedTextClassName,
 }) => {
   const combinedClassNames = cn(
-    "prose prose-li:my-0 prose-li:pl-0 max-w-none prose-h:my-2! prose-h5:leading-[115%] prose-h4:leading-[115%] prose-h3:leading-[115%] prose-h1:leading-[115%] prose-ol:leading-[115%] prose-ul:leading-[115%] prose-p:font-normal prose-p:text-[15px] prose-p:sm:text-[16px] prose-p:font-signika-negative prose-p:leading-[115%] prose-p:tracking-tight prose-li:description! prose-h2:subtitle-2!",
+    "prose prose-li:my-1 prose-li:pl-0 max-w-none prose-headings:my-2! prose-h3:subtitle-3 prose-h5:leading-[115%] prose-h4:leading-[115%] prose-h3:leading-[115%] prose-h1:leading-[115%] prose-ol:leading-[115%] prose-ul:leading-[115%] prose-p:description prose-li:marker:text-deep-bright-red prose-li:description! prose-h2:subtitle-2! prose-p:m-0! prose-p:min-h-lh! prose-ul:m-0 prose-a:text-deep-bright-red",
     className,
   );
 
@@ -44,32 +44,32 @@ const RichText: React.FC<Props> = ({
       ),
     },
     block: {
-      h1: ({ children }: any) => <h1 className="my-4 text-4xl">{children}</h1>,
+      h1: ({ children }: any) => <h1>{children}</h1>,
       h2: ({ children }: any) => {
         const text = getTextFromChildren(children);
         const id = slugify(text);
         return (
-          <h2 id={id} className="my-4! text-2xl font-semibold md:text-3xl">
+          <h2 id={id} >
             {children}
           </h2>
         );
       },
       h3: ({ children }: any) => (
-        <h3 className="my-4 text-xl font-semibold md:text-2xl">{children}</h3>
+        <h3 >{children}</h3>
       ),
       h4: ({ children }: any) => (
-        <h4 className="my-4 text-[18px] font-semibold md:text-xl">
+        <h4 >
           {children}
         </h4>
       ),
       h5: ({ children }: any) => (
-        <h5 className="my-2 text-base font-semibold md:text-[18px]">
+        <h5>
           {children}
         </h5>
       ),
-      h6: ({ children }: any) => <h6 className="my-4 ">{children}</h6>,
+      h6: ({ children }: any) => <h6>{children}</h6>,
       normal: ({ children }: any) => (
-        <p className="mb-4 text-base min-h-lh">{children}</p>
+        <p>{children}</p>
       ),
       center: ({ children }: any) => <p className="text-center">{children}</p>,
     },
