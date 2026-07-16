@@ -21,21 +21,27 @@ import {
 import Link from "next/link";
 import { SanityImage } from "../sanityImage";
 import { SettingsQueryResult } from "@/sanity.types";
+import Image from "next/image";
+import blog from "@/sanity/schemaTypes/documents/blogs/blog";
 
 const SearchDialog = ({
     menuOpen,
     setMenuOpen,
     blogs,
+    tags,
     isMobile
 }: {
     menuOpen: boolean;
     setMenuOpen: React.Dispatch<SetStateAction<boolean>>;
     blogs: NonNullable<SettingsQueryResult>['blogs'];
+    tags: NonNullable<SettingsQueryResult>['blogTags'];
     isMobile: boolean;
 }) => {
     const [inputText, setInputText] = useState<string>("");
     const [isSearchMounted, setIsSearchMounted] = useState<boolean>(false);
     const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
+    const [selectedTags, setSelectedTags] = useState<string[]>([])
+
 
     const timerRef = useRef<ReturnType<typeof setTimeout>>(null);
     const searchDialogTimeRef = useRef<NodeJS.Timeout>(undefined);
@@ -147,6 +153,18 @@ const SearchDialog = ({
                                 className="shadow-none description outline-none p-0 pl-8 py-3 h-auto"
                             />
                         </div>
+                        <div className="flex gap-2 flex-wrap items-center">
+                            {tags.map(tag => <span key={tag._id} role="button" onClick={() => {
+                                return setSelectedTags(prev => {
+                                    if (selectedTags.includes(tag._id)) {
+                                        return prev.filter(tagId => tagId !== tag._id)
+                                    } else {
+                                        return [...prev, tag._id]
+                                    }
+                                })
+                            }
+                            } className={cn("px-3 py-2 rounded-[5px] duration-300 border border-gunmetal-black hover:border-deep-bright-red hover:bg-deep-bright-red cursor-pointer hover:text-white", selectedTags.includes(tag._id) && "bg-deep-bright-red border-deep-bright-red text-white")}>{tag.label}</span>)}
+                        </div>
                     </DialogHeader>
                     {searchResult.length > 0 ?
                         <div className="flex flex-col w-full max-h-full gap-4 overflow-y-scroll custom-scrollbar md:min-h-80 md:max-h-80 no-scrollbar">
@@ -175,20 +193,12 @@ const SearchDialog = ({
                                             <h4 className="subtitle-2">{blog.title}</h4>
 
                                         </div>
-                                        {/* <BlogHeader
-                                            category={blog.categories.label}
-                                            title={blog.title}
-                                            author={blog.author.authorName}
-                                            date={formatDate(blog.uplodedAt || blog._updatedAt)}
-                                            headingClassname="text-sm"
-                                            titleClassname="md:text-[18px] group-hover:text-deep-bright-red text-base"
-                                        /> */}
-
                                     </Link>
                                 </DialogClose>
                             ))}
                         </div>
-                        : <div className="h-full md:max-h-80 md:min-h-80">
+                        : <div className="h-full md:max-h-80 md:min-h-80 flex flex-col items-center justify-center">
+                            <Image src='/not-found.gif' alt="not-found" width={1000} height={1000} className="w-full h-auto object-contain max-h-[200px]" />
                             <p>No match found.</p>
                         </div>
                     }

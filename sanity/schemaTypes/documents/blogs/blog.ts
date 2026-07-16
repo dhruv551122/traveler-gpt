@@ -67,6 +67,12 @@ const blog = defineType({
       to: [{ type: "blogAuthor" }],
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: "location",
+      title: "Location",
+      type: "string",
+      group: "blog",
+    }),
     // defineField({
     //   name: "categories",
     //   title: "Categories",
