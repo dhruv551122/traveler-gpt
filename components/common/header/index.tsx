@@ -138,7 +138,6 @@ export function Header({ data }: { data: NonNullable<SettingsQueryResult> }) {
             <div className="flex items-center gap-6">
               <SearchDialog
                 tags={data.blogTags}
-                blogs={data.blogs}
                 menuOpen={headerOpen}
                 setMenuOpen={setHeaderOpen}
                 isMobile={isMobile}

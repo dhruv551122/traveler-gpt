@@ -1,3 +1,4 @@
+import { formateDate } from "@/lib/utils";
 import { orderRankField } from "@sanity/orderable-document-list";
 import { BookOpen } from "lucide-react";
 import { defineField, defineType } from "sanity";
@@ -107,15 +108,28 @@ const blog = defineType({
       tags3: "tags.3.label",
       uplodedAt: "uplodedAt",
       _updatedAt: "_updatedAt",
+      location: "location",
     },
     prepare(selection) {
-      const { title, media, tags0, tags1, tags2, tags3 } = selection;
+      const {
+        title,
+        media,
+        tags0,
+        tags1,
+        tags2,
+        tags3,
+        location,
+        uplodedAt,
+        _updatedAt,
+      } = selection;
       const tags = [tags0, tags1, tags2].filter(Boolean);
       const subTitle = tags.join(" | ");
       const hasMoreTags = Boolean(tags3);
       return {
         title: title,
-        subtitle: hasMoreTags ? subTitle + " | ..." : subTitle,
+        subtitle:
+          `${location ? `📍 ${location} • ` : ""}${uplodedAt ? formateDate(uplodedAt) : formateDate(_updatedAt)} • ` +
+          (hasMoreTags ? subTitle + " | ..." : subTitle),
         media: media,
       };
     },

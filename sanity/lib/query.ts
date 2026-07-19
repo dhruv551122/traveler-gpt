@@ -6,15 +6,6 @@ export const settingsQuery = groq`
         "blogTags": *[ _type == "blogTag" ]{
             ...,
         },
-        "blogs": *[ _type == "blog"]{
-            ...,
-            heroImage{
-                ...,
-                asset->
-            },
-            tags[]->,
-            author->,
-        }
     }
 `;
 
@@ -31,7 +22,7 @@ export const homePageQuery = groq`*[ _type == 'homePage' && _id == 'homePage'][0
             ...,
             asset->
         },
-    "blogs": *[ _type == 'blog'] | order(coalesce(uploadedAt, _createdAt) desc) {
+    "blogs": *[ _type == 'blog'][0...7] | order(coalesce(uploadedAt, _createdAt) desc) {
         ...,
         heroImage{
             ...,
@@ -108,11 +99,16 @@ export const homePageQuery = groq`*[ _type == 'homePage' && _id == 'homePage'][0
 `;
 
 export const blogsByTitleSearch = groq`
-    *[_type == 'blog' && title match $searchPrefix] | order(score desc){
+    *[_type == 'blog' && title match $searchPrefix && (
+    count($selectedTags) == 0 ||
+    count(tags[@._ref in $selectedTags]) > 0
+  )][$start...$end] | order(score desc){
         _id,
+        _updatedAt,
+        uplodedAt,
         title,
         description,
-        tags->,
+        tags[]->,
         "slug": slug.current,
         heroImage{
             ...,

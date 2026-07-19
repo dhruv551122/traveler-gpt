@@ -175,6 +175,7 @@ export type Blog = {
   };
   content: BlockContent;
   author: BlogAuthorReference;
+  location?: string;
   tags: Array<
     {
       _key: string;
@@ -511,7 +512,7 @@ export type AllSanitySchemaTypes =
 
 // Source: sanity/lib/query.ts
 // Variable: settingsQuery
-// Query: *[ _type == "settings" && _id == "settings"][0]{        ...,        "blogTags": *[ _type == "blogTag" ]{            ...,        },        "blogs": *[ _type == "blog"]{            ...,            heroImage{                ...,                asset->            },            tags[]->,            author->,        }    }
+// Query: *[ _type == "settings" && _id == "settings"][0]{        ...,        "blogTags": *[ _type == "blogTag" ]{            ...,        },    }
 export type SettingsQueryResult = {
   _id: "settings";
   _type: "settings";
@@ -555,72 +556,11 @@ export type SettingsQueryResult = {
     slug: Slug;
     orderRank?: string;
   }>;
-  blogs: Array<{
-    _id: string;
-    _type: "blog";
-    _createdAt: string;
-    _updatedAt: string;
-    _rev: string;
-    seo: Seo;
-    title: string;
-    slug: Slug;
-    description: string;
-    heroImage: {
-      asset: {
-        _id: string;
-        _type: "sanity.imageAsset";
-        _createdAt: string;
-        _updatedAt: string;
-        _rev: string;
-        originalFilename?: string;
-        label?: string;
-        title?: string;
-        description?: string;
-        altText?: string;
-        sha1hash: string;
-        extension: string;
-        mimeType: string;
-        size: number;
-        assetId: string;
-        uploadId?: string;
-        path: string;
-        url: string;
-        metadata?: SanityImageMetadata;
-        source?: SanityAssetSourceData;
-      };
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      _type: "image";
-    };
-    content: BlockContent;
-    author: {
-      _id: string;
-      _type: "blogAuthor";
-      _createdAt: string;
-      _updatedAt: string;
-      _rev: string;
-      authorName: string;
-      orderRank?: string;
-    };
-    tags: Array<{
-      _id: string;
-      _type: "blogTag";
-      _createdAt: string;
-      _updatedAt: string;
-      _rev: string;
-      label: string;
-      slug: Slug;
-      orderRank?: string;
-    }>;
-    uplodedAt?: string;
-    orderRank?: string;
-  }>;
 } | null;
 
 // Source: sanity/lib/query.ts
 // Variable: homePageQuery
-// Query: *[ _type == 'homePage' && _id == 'homePage'][0]{    ...,    seo{        ...,        seoImage{            ...,            asset->        }    },    herobannerImage{            ...,            asset->        },    "blogs": *[ _type == 'blog'] | order(coalesce(uploadedAt, _createdAt) desc) {        ...,        heroImage{            ...,            asset->        },        author->,        tags[]->,    },    "tags": *[ _type == 'blogTag' ]{        ...,    },    trendingBlogs{        ...,        blogs[]->{            ...,            heroImage{            ...,            asset->        },        author->,        tags[]->,        }    },    tagWiseBlogs1{        ...,        tags[]->{            ...,            "blogs": *[ _type == "blog" && ^._id in tags[]->_id ] | order(coalesce(uplodedAt, _createdAt) desc)[0...10]{                    _id,                    _createdAt,                    _updatedAt,                    title,                    slug,                    description,                    heroImage,                    author->{                        _id,                        authorName                    },                    tags[]->{                        _id,                        label,                    },                    uplodedAt                }            }    },    tagWiseBlogs2{        ...,        tags[]->{            ...,                "blogs": *[ _type == "blog" && ^._id in tags[]->_id ] | order(coalesce(uplodedAt, _createdAt) desc)[0...10]{                    _id,                    _createdAt,                    _updatedAt,                    title,                    slug,                    description,                    heroImage,                    author->{                        _id,                        authorName                    },                    tags[]->{                        _id,                        label,                    },                    uplodedAt                }        }    },     }
+// Query: *[ _type == 'homePage' && _id == 'homePage'][0]{    ...,    seo{        ...,        seoImage{            ...,            asset->        }    },    herobannerImage{            ...,            asset->        },    "blogs": *[ _type == 'blog'][0...7] | order(coalesce(uploadedAt, _createdAt) desc) {        ...,        heroImage{            ...,            asset->        },        author->,        tags[]->,    },    "tags": *[ _type == 'blogTag' ]{        ...,    },    trendingBlogs{        ...,        blogs[]->{            ...,            heroImage{            ...,            asset->        },        author->,        tags[]->,        }    },    tagWiseBlogs1{        ...,        tags[]->{            ...,            "blogs": *[ _type == "blog" && ^._id in tags[]->_id ] | order(coalesce(uplodedAt, _createdAt) desc)[0...4]{                    _id,                    _createdAt,                    _updatedAt,                    title,                    slug,                    description,                    heroImage,                    author->{                        _id,                        authorName                    },                    tags[]->{                        _id,                        label,                    },                    uplodedAt                }            }    },    tagWiseBlogs2{        ...,        tags[]->{            ...,                "blogs": *[ _type == "blog" && ^._id in tags[]->_id ] | order(coalesce(uplodedAt, _createdAt) desc)[0...7]{                    _id,                    _createdAt,                    _updatedAt,                    title,                    slug,                    description,                    heroImage,                    author->{                        _id,                        authorName                    },                    tags[]->{                        _id,                        label,                    },                    uplodedAt                }        }    },     }
 export type HomePageQueryResult = {
   _id: "homePage";
   _type: "homePage";
@@ -710,6 +650,7 @@ export type HomePageQueryResult = {
         authorName: string;
         orderRank?: string;
       };
+      location?: string;
       tags: Array<{
         _id: string;
         _type: "blogTag";
@@ -847,6 +788,7 @@ export type HomePageQueryResult = {
       authorName: string;
       orderRank?: string;
     };
+    location?: string;
     tags: Array<{
       _id: string;
       _type: "blogTag";
@@ -874,9 +816,11 @@ export type HomePageQueryResult = {
 
 // Source: sanity/lib/query.ts
 // Variable: blogsByTitleSearch
-// Query: *[_type == 'blog' && title match $searchPrefix] | order(score desc){        _id,        title,        description,        tags->,        "slug": slug.current,        heroImage{            ...,            asset->        },    }
+// Query: *[_type == 'blog' && title match $searchPrefix && (    count($selectedTags) == 0 ||    count(tags[@._ref in $selectedTags]) > 0  )][$start...$end] | order(score desc){        _id,        _updatedAt,        uplodedAt,        title,        description,        tags[]->,        "slug": slug.current,        heroImage{            ...,            asset->        },    }
 export type BlogsByTitleSearchResult = Array<{
   _id: string;
+  _updatedAt: string;
+  uplodedAt: string | null;
   title: string;
   description: string;
   tags: Array<{
@@ -1003,6 +947,7 @@ export type BlogBySlugQueryResult = {
     authorName: string;
     orderRank?: string;
   };
+  location?: string;
   tags: Array<{
     _id: string;
     _type: "blogTag";
@@ -1049,9 +994,9 @@ export type MostPopularBlogsQueryResult = Array<{
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '\n    *[ _type == "settings" && _id == "settings"][0]{\n        ...,\n        "blogTags": *[ _type == "blogTag" ]{\n            ...,\n        },\n        "blogs": *[ _type == "blog"]{\n            ...,\n            heroImage{\n                ...,\n                asset->\n            },\n            tags[]->,\n            author->,\n        }\n    }\n': SettingsQueryResult;
-    '*[ _type == \'homePage\' && _id == \'homePage\'][0]{\n    ...,\n    seo{\n        ...,\n        seoImage{\n            ...,\n            asset->\n        }\n    },\n    herobannerImage{\n            ...,\n            asset->\n        },\n    "blogs": *[ _type == \'blog\'] | order(coalesce(uploadedAt, _createdAt) desc) {\n        ...,\n        heroImage{\n            ...,\n            asset->\n        },\n        author->,\n        tags[]->,\n    },\n    "tags": *[ _type == \'blogTag\' ]{\n        ...,\n    },\n    trendingBlogs{\n        ...,\n        blogs[]->{\n            ...,\n            heroImage{\n            ...,\n            asset->\n        },\n        author->,\n        tags[]->,\n        }\n    },\n    tagWiseBlogs1{\n        ...,\n        tags[]->{\n            ...,\n            "blogs": *[ _type == "blog" && ^._id in tags[]->_id ] | order(coalesce(uplodedAt, _createdAt) desc)[0...10]{\n                    _id,\n                    _createdAt,\n                    _updatedAt,\n                    title,\n                    slug,\n                    description,\n                    heroImage,\n                    author->{\n                        _id,\n                        authorName\n                    },\n                    tags[]->{\n                        _id,\n                        label,\n                    },\n                    uplodedAt\n                }    \n        }\n    },\n    tagWiseBlogs2{\n        ...,\n        tags[]->{\n            ...,\n                "blogs": *[ _type == "blog" && ^._id in tags[]->_id ] | order(coalesce(uplodedAt, _createdAt) desc)[0...10]{\n                    _id,\n                    _createdAt,\n                    _updatedAt,\n                    title,\n                    slug,\n                    description,\n                    heroImage,\n                    author->{\n                        _id,\n                        authorName\n                    },\n                    tags[]->{\n                        _id,\n                        label,\n                    },\n                    uplodedAt\n                }\n        }\n    },\n     \n}\n': HomePageQueryResult;
-    "\n    *[_type == 'blog' && title match $searchPrefix] | order(score desc){\n        _id,\n        title,\n        description,\n        tags->,\n        \"slug\": slug.current,\n        heroImage{\n            ...,\n            asset->\n        },\n    }\n": BlogsByTitleSearchResult;
+    '\n    *[ _type == "settings" && _id == "settings"][0]{\n        ...,\n        "blogTags": *[ _type == "blogTag" ]{\n            ...,\n        },\n    }\n': SettingsQueryResult;
+    '*[ _type == \'homePage\' && _id == \'homePage\'][0]{\n    ...,\n    seo{\n        ...,\n        seoImage{\n            ...,\n            asset->\n        }\n    },\n    herobannerImage{\n            ...,\n            asset->\n        },\n    "blogs": *[ _type == \'blog\'][0...7] | order(coalesce(uploadedAt, _createdAt) desc) {\n        ...,\n        heroImage{\n            ...,\n            asset->\n        },\n        author->,\n        tags[]->,\n    },\n    "tags": *[ _type == \'blogTag\' ]{\n        ...,\n    },\n    trendingBlogs{\n        ...,\n        blogs[]->{\n            ...,\n            heroImage{\n            ...,\n            asset->\n        },\n        author->,\n        tags[]->,\n        }\n    },\n    tagWiseBlogs1{\n        ...,\n        tags[]->{\n            ...,\n            "blogs": *[ _type == "blog" && ^._id in tags[]->_id ] | order(coalesce(uplodedAt, _createdAt) desc)[0...4]{\n                    _id,\n                    _createdAt,\n                    _updatedAt,\n                    title,\n                    slug,\n                    description,\n                    heroImage,\n                    author->{\n                        _id,\n                        authorName\n                    },\n                    tags[]->{\n                        _id,\n                        label,\n                    },\n                    uplodedAt\n                }    \n        }\n    },\n    tagWiseBlogs2{\n        ...,\n        tags[]->{\n            ...,\n                "blogs": *[ _type == "blog" && ^._id in tags[]->_id ] | order(coalesce(uplodedAt, _createdAt) desc)[0...7]{\n                    _id,\n                    _createdAt,\n                    _updatedAt,\n                    title,\n                    slug,\n                    description,\n                    heroImage,\n                    author->{\n                        _id,\n                        authorName\n                    },\n                    tags[]->{\n                        _id,\n                        label,\n                    },\n                    uplodedAt\n                }\n        }\n    },\n     \n}\n': HomePageQueryResult;
+    "\n    *[_type == 'blog' && title match $searchPrefix && (\n    count($selectedTags) == 0 ||\n    count(tags[@._ref in $selectedTags]) > 0\n  )][$start...$end] | order(score desc){\n        _id,\n        _updatedAt,\n        uplodedAt,\n        title,\n        description,\n        tags[]->,\n        \"slug\": slug.current,\n        heroImage{\n            ...,\n            asset->\n        },\n    }\n": BlogsByTitleSearchResult;
     '\n    *[ _type == "blog" && slug.current == $blogSlug][0]{\n        ...,\n        seo{\n            ...,\n            seoImage{\n                ...,\n                asset->\n            }\n        },\n        heroImage{\n            ...,\n            asset->\n        },\n        author->,\n        tags[]->,\n    }\n': BlogBySlugQueryResult;
     '\n    *[ _type == "blog" && _id in $id]{\n        _id,\n        _createdAt,\n        _updatedAt,\n        title,\n        slug,\n        description,\n        heroImage,\n        author->{\n            _id,\n            authorName\n        },\n        tags[]->{\n            _id,\n            label,\n        },\n        uplodedAt,\n    }\n': MostPopularBlogsQueryResult;
   }

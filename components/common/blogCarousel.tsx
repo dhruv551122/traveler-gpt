@@ -34,7 +34,6 @@ const BlogCarousel = async ({
           >
             <Link href={`/blogs/${blog.slug.current}`} className="group flex flex-col gap-4">
               <div className="w-full h-[250px] group overflow-hidden">
-
                 <SanityImage
                   src={blog.heroImage}
                   alt={blog.heroImage.asset?.altText}

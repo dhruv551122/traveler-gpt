@@ -984,6 +984,13 @@
         },
         "optional": false
       },
+      "location": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "tags": {
         "type": "objectAttribute",
         "value": {
